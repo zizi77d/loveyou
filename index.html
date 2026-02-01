@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pixel Valentine for Adam 🤍</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Press Start 2P', monospace;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .container {
+      background: rgba(0,0,0,0.6);
+      border: 4px solid #ffb6c1;
+      padding: 22px;
+      border-radius: 20px;
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(255, 182, 193, 0.9);
+      animation: pop 0.6s ease;
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    h1 {
+      font-size: 12px;
+      color: #ffd1dc;
+      margin-bottom: 14px;
+      line-height: 1.6;
+    }
+
+    p {
+      font-size: 9px;
+      min-height: 120px;
+      line-height: 1.9;
+      white-space: pre-line;
+    }
+
+    .cat {
+      width: 110px;
+      image-rendering: pixelated;
+      margin: 14px auto;
+      animation: bounce 1.3s infinite;
+    }
+
+    @keyframes bounce {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .buttons {
+      margin-top: 14px;
+    }
+
+    button {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      padding: 12px 16px;
+      border-radius: 14px;
+      border: 3px solid #ffd1dc;
+      background: transparent;
+      color: #ffd1dc;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #ffd1dc;
+      color: #000;
+      transform: translateY(-2px) scale(1.05);
+    }
+
+    .heart {
+      position: fixed;
+      bottom: 0;
+      font-size: 16px;
+      animation: floatUp 4s linear forwards;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      from { transform: translateY(0); opacity: 1; }
+      to { transform: translateY(-100vh); opacity: 0; }
+    }
+
+    .end-buttons {
+      display: none;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 14px;
+    }
+
+    .achievement {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #000;
+      border: 3px solid #ffd1dc;
+      padding: 14px 18px;
+      border-radius: 14px;
+      font-size: 8px;
+      color: #ffd1dc;
+      animation: slideUp 0.4s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translate(-50%, 30px); opacity: 0; }
+      to { transform: translate(-50%, 0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Pixel Valentine 💗</h1>
+
+    <img id="cat" class="cat" src="https://i.imgur.com/1XKQb9k.gif" alt="pixel cat">
+
+    <p id="text"></p>
+
+    <div class="buttons" id="nextBtn">
+      <button onclick="nextScene()">Continue 🎮</button>
+    </div>
+
+    <div class="end-buttons" id="endBtns">
+      <button onclick="yes()">YES 💖</button>
+      <button onclick="no()">NO ❌</button>
+    </div>
+  </div>
+
+  <script>
+    const scenes = [
+      "Hey Adam 🤍\n\nI didn’t expect this.\nI didn’t plan this.\n\nBut somehow…\nyou showed up at exactly the right time.",
+
+      "Player Adam has entered my world.\n\nNo big announcement.\nNo warning signs.\n\nBut suddenly…\neverything felt a little warmer.",
+
+      "There’s something I want you to know.\n\nI like you for who you are.\nNot a version you try to be.\n\nJust you.\n\nSo please…\nAlways love yourself first.\n\nBecause that’s the person I fell for.",
+
+      "And baby…\n\nEvery time I think of you,\nmy heart gets all soft and stupid.\n\nI don’t even try to fight it anymore.",
+
+      "Adam 🤍\n\nIf life is a game,\nI don’t need perfect levels.\nI don’t need easy wins.\n\nI just want you, baby.\n\nTo be here.\nTo walk with me.\n\nAnd always be ma side, pwease 🐱💖\n\nSo…\nWill you be my Player 2 this Valentine?"
+    ];
+
+    const cats = [
+      'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/68.png',
+      'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/49.png',
+      'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/12.png',
+      'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/25.png'
+    ];
+
+    let index = 0;
+    const textEl = document.getElementById('text');
+
+    function typeText(text) {
+      textEl.innerText = '';
+      let i = 0;
+      const interval = setInterval(() => {
+        textEl.innerText += text[i];
+        i++;
+        if (i >= text.length) clearInterval(interval);
+      }, 25);
+    }
+
+    function nextScene() {
+      spawnHeart();
+      typeText(scenes[index]);
+
+      // ganti pixel cat tiap scene
+      const catEl = document.getElementById('cat');
+      catEl.style.opacity = 0;
+      setTimeout(() => {
+        catEl.src = cats[index % cats.length];
+        catEl.style.opacity = 1;
+      }, 200);
+
+      index++;
+
+      if (index === scenes.length) {
+        document.getElementById('nextBtn').style.display = 'none';
+        document.getElementById('endBtns').style.display = 'flex';
+      }
+    }
+    }
+
+    function spawnHeart() {
+      const h = document.createElement('div');
+      h.className = 'heart';
+      h.innerText = '💗';
+      h.style.left = Math.random() * 100 + 'vw';
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 4000);
+    }
+
+    function yes() {
+      textEl.innerText = 'True Ending Unlocked 💖\nPlayer 2: Adam 🤍';
+      showAchievement('Achievement Unlocked: Valentine Complete');
+    }
+
+    function no() {
+      textEl.innerText = 'Error 404 ❌\nWrong choice, baby 😈\nPlease try again.';
+    }
+
+    function showAchievement(text) {
+      const a = document.createElement('div');
+      a.className = 'achievement';
+      a.innerText = text;
+      document.body.appendChild(a);
+      setTimeout(() => a.remove(), 3500);
+    }
+
+    // start first scene
+    nextScene();
+  </script>
+</body>
+</html>
